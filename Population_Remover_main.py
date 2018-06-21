@@ -1,20 +1,23 @@
 # coding=utf-8
-#extraire individus membre de ACD
-open("out1.txt", "w").writelines([l for l in open("in.txt").readlines() if "ACB" in l])
+population="ACB" #Population to ignore in the out file 
+i=0
+#We first extract ID of individuals in population
+with open("labels.txt") as f:
+	with open("output_pop.txt", "w") as f1:
+		f1.writelines(f.readlines())
+		next(f) #Skip header line
+		for line in f:
+			if population in line:
+				list1.append(line.split(" ")[0])
+				i=i+1 #Keep track of the number of target individuals
+			else:
+				f1.write(line)
 
-#créer nouveau fichier en copiant les individus non-identifiés dans la première étape
-list1=[]
-with open("out1.txt") as f:
-	for line in f:
-		list1.append(line.split(" ")[0])
-print(list1[2])
-# list1=['hihi', 'lulz','ligne']
-# open("out1.txt", "w").writelines([l for l in open("in.txt").readlines() if l.split(" ")[1] in "ligne hihi lulz"]) #est case sensitive
+print("Number of %s found is %i ",format(population, i))
 
-#"2.7.0_bf4fda703454".split("_") returns this list ['2.7.0', 'bf4fda703454']
-
-with open("in.txt") as f:
-	with open("out1.txt", "w") as f1:
+#Take the individuals on the list out of train.raw			
+with open("output_pop.txt") as f:
+	with open("train_new.txt", "w") as f1:
 
 		for line in f:
 			for iteration in range(len(list1)):
